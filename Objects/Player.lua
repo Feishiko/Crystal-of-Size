@@ -38,6 +38,12 @@ function M:New()
             gameCont.GameLoad()
         end
 
+        -- Debug
+        if love.keyboard.wasPressed("tab") then
+            o.x = utility.GetMouseX()
+            o.y = utility.GetMouseY()
+        end
+
         if not o.isDead then
             if love.keyboard.isDown("left") then
                 o:TryMove(-o.spd * dt * 160, 0)
@@ -80,7 +86,7 @@ function M:New()
                 o.isGround = false
             end
         end
-        o:TryMove(0, o.isGround and 0 or math.min(.8, o.dropTimer/20) * dt * 160)
+        o:TryMove(0, o.isGround and 0 or math.min(1, o.dropTimer/30) * dt * 160)
 
         -- Animation
         o.currentFrameTimer = o.currentFrameTimer + dt * 160
@@ -89,28 +95,29 @@ function M:New()
     function o:Draw()
         -- love.graphics.rectangle("line", o.x, o.y, o.width, o.height)
         love.graphics.push()
-        love.graphics.translate(o.x + 5, o.y + 10*(o.isGrowth and 2 or 1))
+        love.graphics.translate(o.x + 4, o.y + 10*(o.isGrowth and 2 or 1))
         love.graphics.scale(o.face*(o.isGrowth and 2 or 1), o.isGrowth and 2 or 1)
         if o.isGround then
             if o.isRun then
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 1, 4)[(math.floor(o.currentFrameTimer / 10) % 4) + 1], -5, -10)
+                    o:animation(o.spriteSheet, 10, 10, 1, 4)[(math.floor(o.currentFrameTimer / 10) % 4) + 1], -6, -10)
             else
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 0, 5)[(math.floor(o.currentFrameTimer / 10) % 5) + 1], -5, -10)
+                    o:animation(o.spriteSheet, 10, 10, 0, 5)[(math.floor(o.currentFrameTimer / 10) % 5) + 1], -6, -10)
             end
         end
 
         if not o.isGround then
             if not o.isDrop then
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 2, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -5, -10)
+                    o:animation(o.spriteSheet, 10, 10, 2, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -6, -10)
             else
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 3, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -5, -10)
+                    o:animation(o.spriteSheet, 10, 10, 3, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -6, -10)
             end
         end
         love.graphics.pop()
+        -- love.graphics.rectangle("line", o.x, o.y, o.width, o.height)
     end
 
     -- TODO: Still need to fix this function to make drop stable

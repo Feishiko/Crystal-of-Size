@@ -103,7 +103,10 @@ function M:Init()
     M.levelSequence[1] = { 2, nil, 3, nil } -- Right Bottom Left Up
     M.levelSequence[2] = { nil, nil, 1, 4 }
     M.levelSequence[3] = { 1, nil, nil, nil }
-    M.levelSequence[4] = { nil, 2, nil, nil }
+    M.levelSequence[4] = { 5, 2, nil, nil }
+    M.levelSequence[5] = {nil, 7, 4, 6}
+    M.levelSequence[6] = {nil, 5, nil, nil}
+    M.levelSequence[7] = {nil, nil, nil, 5}
 
     ldtk:goTo(1)
 end
