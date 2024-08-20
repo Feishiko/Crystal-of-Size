@@ -15709,7 +15709,7 @@
 						},
 						{
 							"__identifier": "Text",
-							"__grid": [2,5],
+							"__grid": [2,4],
 							"__pivot": [0,0],
 							"__tags": [],
 							"__tile": null,
@@ -15718,29 +15718,10 @@
 							"width": 16,
 							"height": 16,
 							"defUid": 105,
-							"px": [32,80],
+							"px": [32,64],
 							"fieldInstances": [{ "__identifier": "String", "__type": "String", "__value": "Made with Love2d, VSCODE, Aseprite, LDtk, Reaper, Audacity", "__tile": null, "defUid": 106, "realEditorValues": [{
 								"id": "V_String",
 								"params": ["Made with Love2d, VSCODE, Aseprite, LDtk, Reaper, Audacity"]
-							}] }],
-							"__worldX": 1056,
-							"__worldY": -176
-						},
-						{
-							"__identifier": "Text",
-							"__grid": [2,4],
-							"__pivot": [0,0],
-							"__tags": [],
-							"__tile": null,
-							"__smartColor": "#3E8948",
-							"iid": "8715bb70-4ce0-11ef-8b97-651fdbfef040",
-							"width": 16,
-							"height": 16,
-							"defUid": 105,
-							"px": [32,64],
-							"fieldInstances": [{ "__identifier": "String", "__type": "String", "__value": "Made for GMTK 2024", "__tile": null, "defUid": 106, "realEditorValues": [{
-								"id": "V_String",
-								"params": ["Made for GMTK 2024"]
 							}] }],
 							"__worldX": 1056,
 							"__worldY": -192

@@ -4,7 +4,7 @@ local gameObject = require("Lua.gameObject");
 function M:CollisionObject(object, class)
     for key, value in pairs(gameObject.instanceList) do
         if (value.class == class) then
-            return M:CollisionAABB(object.x, object.y, object.sizeX, object.sizeY, value.x, value.y, value.sizeX, value.sizeY) and value;
+            return M:CollisionAABB(object.x, object.y, object.width, object.height, value.x, value.y, value.width, value.height), value;
         end
     end
 end
@@ -12,7 +12,7 @@ end
 function M:CollisionPoint(posX, posY, class)
     for key, value in pairs(gameObject.instanceList) do
         if (value.class == class) then
-            return M:CollisionAABB(posX, posY, 0, 0, value.x, value.y, value.sizeX, value.sizeY) and value;
+            return M:CollisionAABB(posX, posY, 0, 0, value.x, value.y, value.width, value.height), value;
         end
     end
 end

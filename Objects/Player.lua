@@ -21,11 +21,24 @@ function M:New()
     o.isGrowth = false
     o.spd = .5
     o.isDead = false
+    o.key = 0
+    o.deathCount = 0
+    o.gameTime = 0
+    o.jumpSound = love.audio.newSource("Sounds/JUMP.wav", "static")
+    o.unlockSound = love.audio.newSource("Sounds/unlock.wav", "static")
     o.spriteSheet = love.graphics.newImage("Sprites/Player-Sheet.png")
+    o.spriteSheet:setFilter("nearest")
+    o.keySprite = love.graphics.newImage("Sprites/Key.png")
+    o.spriteSheet:setFilter("nearest")
     function o:Load()
     end
 
     function o:Update(dt)
+        -- Time Used
+        o.gameTime = o.gameTime + dt
+
+        love.window.setTitle("Size Gear - [Death]: " .. o.deathCount .. " [Time]: " .. math.floor(o.gameTime/3600) .. ":" .. string.format("%02d", math.floor(o.gameTime/60) % 60) .. ":" .. string.format("%02d", math.floor(o.gameTime) % 60))
+
         -- Movement
         o.spd = o.isGrowth and 1 or .5
         o.width = o.isGrowth and 10 or 5
@@ -39,10 +52,10 @@ function M:New()
         end
 
         -- Debug
-        if love.keyboard.wasPressed("tab") then
-            o.x = utility.GetMouseX()
-            o.y = utility.GetMouseY()
-        end
+        -- if love.keyboard.wasPressed("tab") then
+        --     o.x = utility.GetMouseX()
+        --     o.y = utility.GetMouseY()
+        -- end
 
         if not o.isDead then
             if love.keyboard.isDown("left") then
@@ -50,7 +63,30 @@ function M:New()
                 o.face = -1
             end
             if love.keyboard.isDown("right") then
-                o:TryMove(o.spd * dt * 160, 0)
+                -- Lock
+                local isPass = true
+                local isCollision, lock = utility.collision:CollisionPoint(o.x + o.width + (o.spd * dt * 160), o.y, "Lock")
+                print(isCollision, lock)
+                if (isCollision) then
+                    if (o.key > 0) then
+                        o.key = o.key - 1
+                        o.unlockSound:stop()
+                        o.unlockSound:play()
+                        lock:Free()
+                        local gameCont = utility.gameObject:Find("GameCont") or {}
+                        for index, value in ipairs(gameCont.saveGame.isLock) do
+                            if not value then
+                                gameCont.saveGame.isLock[index] = true
+                                break
+                            end
+                        end
+                    else
+                        isPass = false
+                    end
+                end
+                if isPass then
+                    o:TryMove(o.spd * dt * 160, 0)
+                end
                 o.face = 1
             end
             if love.keyboard.isDown("left") or love.keyboard.isDown("right") then
@@ -62,6 +98,8 @@ function M:New()
                 o.isJump = false
                 o.isGround = false
                 o.isDrop = false
+                o.jumpSound:stop()
+                o.jumpSound:play()
             end
             if love.keyboard.wasReleased("lshift") and not o.isJump then
                 o.isDrop = true
@@ -100,23 +138,27 @@ function M:New()
         if o.isGround then
             if o.isRun then
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 1, 4)[(math.floor(o.currentFrameTimer / 10) % 4) + 1], -6, -10)
+                    o:animation(o.spriteSheet, 10, 10, 1, 4)[(math.floor(o.currentFrameTimer / 10) % 4) + 1], -5.5, -10)
             else
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 0, 5)[(math.floor(o.currentFrameTimer / 10) % 5) + 1], -6, -10)
+                    o:animation(o.spriteSheet, 10, 10, 0, 5)[(math.floor(o.currentFrameTimer / 10) % 5) + 1], -5.5, -10)
             end
         end
 
         if not o.isGround then
             if not o.isDrop then
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 2, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -6, -10)
+                    o:animation(o.spriteSheet, 10, 10, 2, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -5.5, -10)
             else
                 love.graphics.draw(o.spriteSheet,
-                    o:animation(o.spriteSheet, 10, 10, 3, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -6, -10)
+                    o:animation(o.spriteSheet, 10, 10, 3, 2)[(math.floor(o.currentFrameTimer / 10) % 2) + 1], -5.5, -10)
             end
         end
         love.graphics.pop()
+        -- Key
+        for i = 0, o.key - 1, 1 do
+            love.graphics.draw(o.keySprite, 0 + i*16, 0)
+        end
         -- love.graphics.rectangle("line", o.x, o.y, o.width, o.height)
     end
 

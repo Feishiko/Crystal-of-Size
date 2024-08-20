@@ -7,6 +7,8 @@ function M:New()
     o.width = 16
     o.height = 16
     o.sprite = love.graphics.newImage("Sprites/Gear.png")
+    o.sprite:setFilter("nearest")
+    o.gearSound = love.audio.newSource("Sounds/MAKE.wav", "static")
     function o:Load()
     end
 
@@ -14,6 +16,8 @@ function M:New()
         local player = utility.gameObject:Find("Player") or {}
         if utility.collision:CollisionAABB(o.x, o.y, o.width, o.height, player.x, player.y, player.width, player.height) then
             player.isGrowth = not player.isGrowth
+            o.gearSound:stop()
+            o.gearSound:play()
             self:Free()
         end
     end

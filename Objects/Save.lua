@@ -9,6 +9,7 @@ function M:New()
     o.couldSave = false
     o.suckTimer = 100
     o.saveTimer = 100
+    o.saveSound = love.audio.newSource("Sounds/save.wav", "static")
     function o:Load()
     end
 
@@ -26,6 +27,8 @@ function M:New()
             o.suckTimer = 0
             o.downTimer = 0
             o.saveTimer = 0
+            o.saveSound:stop()
+            o.saveSound:play();
             local gameCont = utility.gameObject:Find("GameCont") or {}
             gameCont.GameSave()
         end

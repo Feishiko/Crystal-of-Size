@@ -12,7 +12,7 @@ function M:Load()
 end
 
 function M:Update(dt)
-    utility.scene:SceneChange("level")
+    utility.scene:SceneChange("menu")
 end
 
 function M:Draw()

@@ -196,7 +196,7 @@ end
 --LDtk uses hex colors while LÖVE uses RGB (on a scale of 0 to 1)
 -- Converts hex color to RGB
 function ldtk.hex2rgb(color)
-    local r = load("return {0x" .. color:sub(2, 3) .. ",0x" .. color:sub(4, 5) .. 
+    local r = loadstring("return {0x" .. color:sub(2, 3) .. ",0x" .. color:sub(4, 5) .. 
                 ",0x" .. color:sub(6, 7) .. "}")()
     return {r[1] / 255, r[2] / 255, r[3] / 255}
 end
